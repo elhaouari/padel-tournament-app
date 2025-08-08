@@ -1,0 +1,194 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-top: 32px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.info {
+    text-align: center;
+}
+
+.infoText {
+    color: #718096;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pageNumbers {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pageButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.pageButton:hover:not(:disabled) {
+    border-color: #3182ce;
+    background: #f7fafc;
+    transform: translateY(-1px);
+}
+
+.pageButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.activePage {
+    background: #3182ce;
+    color: white;
+    border-color: #3182ce;
+    box-shadow: 0 2px 4px rgba(49, 130, 206, 0.3);
+}
+
+.activePage:hover {
+    background: #2c5aa0;
+    border-color: #2c5aa0;
+}
+
+.inactivePage {
+    color: #4a5568;
+}
+
+.navButton {
+    gap: 6px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+}
+
+.navButton:hover:not(:disabled) {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.navButton:disabled {
+    background: #e2e8f0;
+    color: #a0aec0;
+}
+
+.navIcon {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.navText {
+    font-size: 14px;
+}
+
+.ellipsis {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    color: #a0aec0;
+    font-weight: bold;
+    user-select: none;
+}
+
+.loadingOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+}
+
+.loadingSpinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #e2e8f0;
+    border-top: 2px solid #3182ce;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .container {
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .pagination {
+        gap: 4px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .pageNumbers {
+        gap: 2px;
+    }
+
+    .pageButton {
+        min-width: 36px;
+        height: 36px;
+        font-size: 13px;
+    }
+
+    .navButton {
+        padding: 0 8px;
+    }
+
+    .navText {
+        display: none;
+    }
+
+    .navIcon {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pageNumbers {
+        max-width: 200px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .pageNumbers::-webkit-scrollbar {
+        display: none;
+    }
+}

@@ -1,6 +1,6 @@
 // Constants and configuration values for the user module
 
-import { UserRole, PadelLevel } from '../types';
+import { UserRole } from '../types';
 
 // User validation constants
 export const USER_VALIDATION = {
@@ -32,30 +32,31 @@ export const USER_ROLE_OPTIONS = [
 ] as const;
 
 // Padel level options with detailed descriptions
+// If PadelLevel is a union type, use string literals:
 export const PADEL_LEVEL_OPTIONS = [
     {
-        value: PadelLevel.BEGINNER,
+        value: 'BEGINNER',
         label: 'Beginner',
         icon: '🟢',
         color: '#38a169',
         description: 'New to padel or learning basic techniques'
     },
     {
-        value: PadelLevel.INTERMEDIATE,
+        value: 'INTERMEDIATE',
         label: 'Intermediate',
         icon: '🟡',
         color: '#d69e2e',
         description: 'Comfortable with basics, developing strategy'
     },
     {
-        value: PadelLevel.ADVANCED,
+        value: 'ADVANCED',
         label: 'Advanced',
         icon: '🟠',
         color: '#d53f8c',
         description: 'Strong tactical play and consistent technique'
     },
     {
-        value: PadelLevel.PROFESSIONAL,
+        value: 'PROFESSIONAL',
         label: 'Professional',
         icon: '🔴',
         color: '#805ad5',
@@ -176,11 +177,12 @@ export const THEME_COLORS = {
     COACH_COLOR: '#d69e2e',
 
     // Level colors (matches getPadelLevelColor utility)
+    // For THEME_COLORS.LEVEL_COLORS, use string keys if PadelLevel is not an enum:
     LEVEL_COLORS: {
-        [PadelLevel.BEGINNER]: '#38a169',
-        [PadelLevel.INTERMEDIATE]: '#d69e2e',
-        [PadelLevel.ADVANCED]: '#d53f8c',
-        [PadelLevel.PROFESSIONAL]: '#805ad5'
+        BEGINNER: '#38a169',
+        INTERMEDIATE: '#d69e2e',
+        ADVANCED: '#d53f8c',
+        PROFESSIONAL: '#805ad5'
     }
 } as const;
 

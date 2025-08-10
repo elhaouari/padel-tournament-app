@@ -17,23 +17,16 @@ export * from './constants';
 
 
 // Import missing constants and utilities
-import {
-    USER_ROLE_OPTIONS,
-    PADEL_LEVEL_OPTIONS,
-    REGEX_PATTERNS,
-    USER_VALIDATION
-} from './constants';
-
 import { getRoleIcon, getDisplayName, getPadelLevelLabel, formatHourlyRate, createUserSlug } from './userHelpers';
 
 
 // Utility type guards and helpers
 export const isValidUserRole = (role: string): boolean => {
-    return USER_ROLE_OPTIONS.some(option => option.value === role);
+    return ['PLAYER', 'COACH'].includes(role);
 };
 
 export const isValidPadelLevel = (level: string): boolean => {
-    return PADEL_LEVEL_OPTIONS.some(option => option.value === level);
+    return ['BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'PROFESSIONAL'].includes(level);
 };
 
 // Common utility combinations

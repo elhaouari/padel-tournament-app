@@ -13,7 +13,7 @@ export * from './auth.types';
 export * from './common.types';
 
 // Re-export commonly used types for convenience
-import { User, UserRole, PadelLevel, CreateUserRequest, UpdateUserRequest, UserFilters, UserListResponse, UserCardProps, UserListProps, UserFilterProps, PaginationProps, UseAuthReturn, UseUsersReturn, UseUserReturn, UseSearchReturn, UserFormData, RegisterFormData, LoginFormData, AuthUser } from './user.types';
+import { User, UserRole, CreateUserRequest, UpdateUserRequest, UserFilters, UserListResponse, UserCardProps, UserListProps, UserFilterProps, PaginationProps, UseAuthReturn, UseUsersReturn, UseUserReturn, UseSearchReturn, UserFormData, RegisterFormData, LoginFormData, AuthUser } from './user.types';
 import { ApiResponse, PaginatedApiResponse, ApiError } from './api.types';
 import { SignInRequest, AuthError } from './auth.types';
 import { FormState, ValidationRule, LoadingState, AsyncState, ID, Timestamp, Optional, RequiredFields } from './common.types';
@@ -22,7 +22,6 @@ import { RequestStatus } from './user.types';
 export type {
     User,
     UserRole,
-    PadelLevel,
     CreateUserRequest,
     UpdateUserRequest,
     UserFilters,
@@ -119,11 +118,19 @@ export const getUserRoleOptions = () => [
     { value: UserRole.COACH, label: 'Coach' }
 ];
 
-export const getPadelLevelOptions = () => [
-    { value: PadelLevel.BEGINNER, label: 'Beginner' },
-    { value: PadelLevel.INTERMEDIATE, label: 'Intermediate' },
-    { value: PadelLevel.ADVANCED, label: 'Advanced' },
-    { value: PadelLevel.PROFESSIONAL, label: 'Professional' }
+// If you want to use PadelLevel as a value, define it as an enum in user.types.ts:
+// export enum PadelLevel {
+//     BEGINNER = 'BEGINNER',
+//     INTERMEDIATE = 'INTERMEDIATE',
+//     ADVANCED = 'ADVANCED',
+//     PROFESSIONAL = 'PROFESSIONAL'
+// }
+
+export const PADEL_LEVEL_OPTIONS = [
+    { value: 'BEGINNER', label: 'Beginner' },
+    { value: 'INTERMEDIATE', label: 'Intermediate' },
+    { value: 'ADVANCED', label: 'Advanced' },
+    { value: 'PROFESSIONAL', label: 'Professional' }
 ];
 
 // Validation type predicates

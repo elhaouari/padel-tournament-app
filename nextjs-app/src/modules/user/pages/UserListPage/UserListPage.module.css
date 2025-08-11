@@ -1,0 +1,693 @@
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+    min-height: 100vh;
+    background: #f8fafc;
+}
+
+/* Header Styles */
+.header {
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.headerContent {
+    margin-bottom: 24px;
+}
+
+.title {
+    font-size: 48px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0 0 8px 0;
+}
+
+.subtitle {
+    font-size: 18px;
+    color: #718096;
+    margin: 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Stats Container */
+.statsContainer {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 24px;
+}
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.statItem {
+    text-align: center;
+    padding: 16px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+}
+
+.statValue {
+    display: block;
+    font-size: 32px;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 4px;
+}
+
+.statLabel {
+    font-size: 14px;
+    color: #718096;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Authentication Required */
+.authRequired {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    text-align: center;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 60px auto;
+    max-width: 500px;
+}
+
+.authIcon {
+    font-size: 64px;
+    margin-bottom: 24px;
+}
+
+.authRequired h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0 0 12px 0;
+}
+
+.authRequired p {
+    font-size: 16px;
+    color: #718096;
+    margin: 0 0 32px 0;
+    max-width: 400px;
+}
+
+.loginButton {
+    padding: 12px 32px;
+    background: #3182ce;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 16px;
+}
+
+.loginButton:hover {
+    background: #2c5aa0;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+}
+
+/* Messages */
+.successMessage, .errorMessage {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    font-weight: 500;
+    animation: slideDown 0.3s ease-out;
+}
+
+.successMessage {
+    background: #c6f6d5;
+    color: #22543d;
+    border: 1px solid #9ae6b4;
+}
+
+.errorMessage {
+    background: #fed7d7;
+    color: #c53030;
+    border: 1px solid #feb2b2;
+}
+
+.successIcon, .errorIcon {
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.retryButton {
+    margin-left: auto;
+    padding: 4px 12px;
+    background: #e53e3e;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.retryButton:hover {
+    background: #c53030;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Content Layout */
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Filters Section */
+.filtersSection {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.activeFilters {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+    flex-wrap: wrap;
+}
+
+.activeFiltersLabel {
+    font-size: 14px;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.filterTags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.filterTag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    background: #edf2f7;
+    color: #4a5568;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.removeFilter {
+    background: none;
+    border: none;
+    color: #718096;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+    margin-left: 2px;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.removeFilter:hover {
+    background: #cbd5e0;
+    color: #4a5568;
+}
+
+.clearFilters {
+    margin-left: auto;
+    padding: 6px 12px;
+    background: #e2e8f0;
+    color: #4a5568;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.clearFilters:hover {
+    background: #cbd5e0;
+    color: #2d3748;
+}
+
+/* Results Header */
+.resultsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.resultsInfo {
+    font-size: 14px;
+    color: #4a5568;
+    font-weight: 500;
+}
+
+.viewOptions {
+    display: flex;
+    gap: 8px;
+}
+
+.viewOptionButton {
+    padding: 6px 12px;
+    background: #edf2f7;
+    color: #4a5568;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.viewOptionButton:hover {
+    background: #e2e8f0;
+    color: #2d3748;
+}
+
+/* User List Container */
+.userListContainer {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-height: 400px;
+}
+
+/* Pagination Container */
+.paginationContainer {
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Development Info */
+.devInfo {
+    margin-top: 32px;
+    padding: 16px;
+    background: #1a202c;
+    color: #e2e8f0;
+    border-radius: 8px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.devInfo summary {
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #fbd38d;
+}
+
+.devInfo pre {
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-x: auto;
+    margin: 0;
+    padding: 8px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .container {
+        padding: 20px;
+    }
+
+    .statsGrid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
+
+    .title {
+        font-size: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 16px;
+    }
+
+    .title {
+        font-size: 32px;
+    }
+
+    .subtitle {
+        font-size: 16px;
+    }
+
+    .statsGrid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .statItem {
+        padding: 12px;
+    }
+
+    .statValue {
+        font-size: 24px;
+    }
+
+    .resultsHeader {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .viewOptions {
+        justify-content: center;
+    }
+
+    .activeFilters {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .filterTags {
+        justify-content: center;
+    }
+
+    .clearFilters {
+        margin-left: 0;
+        align-self: center;
+    }
+
+    .filtersSection {
+        padding: 16px;
+    }
+
+    .userListContainer {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 12px;
+    }
+
+    .title {
+        font-size: 28px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+    }
+
+    .authRequired {
+        padding: 40px 16px;
+        margin: 40px 16px;
+    }
+
+    .authRequired h2 {
+        font-size: 24px;
+    }
+
+    .authRequired p {
+        font-size: 14px;
+    }
+
+    .loginButton {
+        padding: 10px 24px;
+        font-size: 14px;
+    }
+
+    .successMessage,
+    .errorMessage {
+        padding: 12px 16px;
+        font-size: 14px;
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+
+    .retryButton {
+        margin-left: 0;
+        align-self: center;
+    }
+
+    .statsContainer {
+        padding: 16px;
+    }
+
+    .statValue {
+        font-size: 20px;
+    }
+
+    .statLabel {
+        font-size: 12px;
+    }
+
+    .resultsHeader {
+        padding: 12px 16px;
+    }
+
+    .resultsInfo {
+        font-size: 12px;
+    }
+
+    .viewOptionButton {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+
+    .filterTag {
+        font-size: 11px;
+        padding: 3px 6px;
+    }
+
+    .activeFiltersLabel {
+        font-size: 12px;
+    }
+
+    .clearFilters {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+}
+
+/* Animations */
+.content {
+    animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading states */
+.resultsInfo:has(.loading) {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Focus states for accessibility */
+.loginButton:focus,
+.retryButton:focus,
+.viewOptionButton:focus,
+.removeFilter:focus,
+.clearFilters:focus {
+    outline: 2px solid #3182ce;
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .container {
+        background: white;
+    }
+
+    .filtersSection,
+    .userListContainer,
+    .paginationContainer,
+    .resultsHeader,
+    .statsContainer {
+        border: 2px solid #000;
+    }
+
+    .loginButton,
+    .retryButton,
+    .viewOptionButton,
+    .clearFilters {
+        border: 2px solid;
+    }
+
+    .successMessage,
+    .errorMessage {
+        border-width: 2px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .content {
+        animation: none;
+    }
+
+    .successMessage,
+    .errorMessage {
+        animation: none;
+    }
+
+    .loginButton:hover,
+    .retryButton:hover,
+    .viewOptionButton:hover,
+    .clearFilters:hover {
+        transform: none;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .container {
+        background: #1a202c;
+        color: #e2e8f0;
+    }
+
+    .filtersSection,
+    .userListContainer,
+    .paginationContainer,
+    .resultsHeader,
+    .statsContainer,
+    .authRequired {
+        background: #2d3748;
+        color: #e2e8f0;
+    }
+
+    .title {
+        background: linear-gradient(135deg, #90cdf4 0%, #b794f6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .subtitle {
+        color: #a0aec0;
+    }
+
+    .statItem {
+        background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+    }
+
+    .statValue {
+        color: #f7fafc;
+    }
+
+    .statLabel {
+        color: #a0aec0;
+    }
+
+    .authRequired h2 {
+        color: #f7fafc;
+    }
+
+    .authRequired p {
+        color: #a0aec0;
+    }
+
+    .resultsInfo {
+        color: #a0aec0;
+    }
+
+    .activeFiltersLabel {
+        color: #cbd5e0;
+    }
+
+    .filterTag {
+        background: #4a5568;
+        color: #e2e8f0;
+    }
+
+    .removeFilter {
+        color: #a0aec0;
+    }
+
+    .removeFilter:hover {
+        background: #718096;
+        color: #f7fafc;
+    }
+
+    .clearFilters {
+        background: #4a5568;
+        color: #e2e8f0;
+    }
+
+    .clearFilters:hover {
+        background: #718096;
+        color: #f7fafc;
+    }
+
+    .viewOptionButton {
+        background: #4a5568;
+        color: #e2e8f0;
+    }
+
+    .viewOptionButton:hover {
+        background: #718096;
+        color: #f7fafc;
+    }
+}

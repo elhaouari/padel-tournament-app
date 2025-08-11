@@ -1,5 +1,5 @@
-import { UserListPageWrapper } from '@/modules/user/pages/UserListPage';
+import { UsersList } from '@/components/UsersList';
 
 export default function UsersPage() {
-    return <UserListPageWrapper />;
+  return <UsersList />;
 }

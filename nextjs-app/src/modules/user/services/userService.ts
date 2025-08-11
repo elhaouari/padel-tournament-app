@@ -2,6 +2,7 @@ import { User, CreateUserRequest, UpdateUserRequest, UserFilters, UserListRespon
 import { IUserRepository } from './userRepository';
 import { IAuthService } from './authService';
 import { validateUserRegistration, validateUserUpdate, ValidationResult } from '../utils/userValidation';
+import { api } from './apiClient';
 
 // User service interface
 export interface IUserService {
@@ -451,5 +452,162 @@ export class UserService implements IUserService {
         if (!allowedTypes.includes(file.type)) {
             throw new Error('Avatar must be a JPEG, PNG, or WebP image');
         }
+    }
+}
+
+// API-based user service for client-side usage
+export class ApiUserService implements IUserService {
+    async registerUser(userData: CreateUserRequest): Promise<{ user?: User; error?: string }> {
+        try {
+            const result = await api.auth.register(userData);
+            return { user: result };
+        } catch (error: any) {
+            return { error: error.message || 'Registration failed' };
+        }
+    }
+
+    async getUserById(id: string): Promise<User | null> {
+        try {
+            return await api.users.get(id);
+        } catch (error) {
+            console.error('Error fetching user:', error);
+            return null;
+        }
+    }
+
+    async getUserByEmail(email: string): Promise<User | null> {
+        try {
+            // Search for user by email
+            const users = await api.users.search(email);
+            return users.find(u => u.email === email) || null;
+        } catch (error) {
+            console.error('Error fetching user by email:', error);
+            return null;
+        }
+    }
+
+    async getUsers(page = 1, limit = 12, filters: UserFilters = {}): Promise<UserListResponse> {
+        try {
+            return await api.users.list({ page, limit, ...filters });
+        } catch (error) {
+            console.error('Error fetching users:', error);
+            return { users: [], total: 0, page, limit };
+        }
+    }
+
+    async updateUser(id: string, userData: UpdateUserRequest): Promise<User> {
+        return await api.users.update(id, userData);
+    }
+
+    async deleteUser(id: string): Promise<void> {
+        await api.users.delete(id);
+    }
+
+    async searchUsers(query: string, currentUserId?: string): Promise<User[]> {
+        try {
+            return await api.users.search(query, currentUserId);
+        } catch (error) {
+            console.error('Error searching users:', error);
+            return [];
+        }
+    }
+
+    async getUsersByRole(role: string, page = 1, limit = 12): Promise<UserListResponse> {
+        return await this.getUsers(page, limit, { role });
+    }
+
+    async getUsersByLevel(level: string, page = 1, limit = 12): Promise<UserListResponse> {
+        return await this.getUsers(page, limit, { level });
+    }
+
+    async getUsersByLocation(location: string, page = 1, limit = 12): Promise<UserListResponse> {
+        return await this.getUsers(page, limit, { location });
+    }
+
+    async getUserStats(): Promise<{
+        totalUsers: number;
+        totalPlayers: number;
+        totalCoaches: number;
+        usersByLevel: Record<string, number>;
+        usersByRole: Record<string, number>;
+        recentUsers: User[];
+    }> {
+        try {
+            return await api.users.stats();
+        } catch (error) {
+            console.error('Error fetching user stats:', error);
+            return {
+                totalUsers: 0,
+                totalPlayers: 0,
+                totalCoaches: 0,
+                usersByLevel: {},
+                usersByRole: {},
+                recentUsers: []
+            };
+        }
+    }
+
+    async updateProfile(userId: string, profileData: UpdateUserRequest): Promise<User> {
+        return await api.profile.update(userId, profileData);
+    }
+
+    async uploadAvatar(userId: string, file: File): Promise<{ avatarUrl: string }> {
+        return await api.upload.avatar(file, userId);
+    }
+
+    validateRegistrationData(userData: CreateUserRequest): ValidationResult {
+        return validateUserRegistration(userData);
+    }
+
+    validateUpdateData(userData: UpdateUserRequest): ValidationResult {
+        return validateUserUpdate(userData);
+    }
+
+    async canUserAccessProfile(requesterId: string, targetUserId: string): Promise<boolean> {
+        // Simple client-side check - always allow for now
+        return true;
+    }
+
+    async isEmailAvailable(email: string, excludeUserId?: string): Promise<boolean> {
+        try {
+            const user = await this.getUserByEmail(email);
+            if (!user) return true;
+            return excludeUserId ? user.id === excludeUserId : false;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    calculateProfileCompleteness(user: User): number {
+        let completedFields = 0;
+        let totalFields = 0;
+
+        // Basic required fields
+        const basicFields = ['name', 'email'];
+        totalFields += basicFields.length;
+        basicFields.forEach(field => {
+            if (user[field as keyof User]) completedFields++;
+        });
+
+        // Optional but valuable fields
+        const optionalFields = ['avatar', 'phone', 'bio', 'location'];
+        totalFields += optionalFields.length;
+        optionalFields.forEach(field => {
+            if (user[field as keyof User]) completedFields++;
+        });
+
+        // Role-specific fields
+        if (user.role === 'PLAYER') {
+            totalFields += 2; // level, experience
+            if (user.level) completedFields++;
+            if (user.experience) completedFields++;
+        } else if (user.role === 'COACH') {
+            totalFields += 3; // hourlyRate, certifications, specialties
+            if (user.hourlyRate) completedFields++;
+            if (user.certifications?.length) completedFields++;
+            if (user.specialties?.length) completedFields++;
+        }
+
+        return Math.round((completedFields / totalFields) * 100);
     }
 }

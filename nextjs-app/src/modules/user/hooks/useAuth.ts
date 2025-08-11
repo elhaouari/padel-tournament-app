@@ -1,12 +1,8 @@
 import { useState, useEffect } from 'react';
 import { User as SupabaseUser } from '@supabase/supabase-js';
-import { supabase } from '../lib/supabase';
-import { AuthService } from '../services/authService';
-import { UserService } from '../services/userService';
+import supabase from '../../../lib/supabase';
+import { getAuthService, getUserService } from '../services';
 import { User, CreateUserRequest } from '../types';
-
-const authService = new AuthService();
-const userService = new UserService();
 
 export const useAuth = () => {
     const [user, setUser] = useState<User | null>(null);
@@ -22,6 +18,7 @@ export const useAuth = () => {
                 if (session?.user) {
                     setSupabaseUser(session.user);
                     // Fetch full user data from our database
+                    const userService = getUserService();
                     const userData = await userService.getUserById(session.user.id);
                     setUser(userData);
                 }
@@ -41,6 +38,7 @@ export const useAuth = () => {
                 try {
                     if (session?.user) {
                         setSupabaseUser(session.user);
+                        const userService = getUserService();
                         const userData = await userService.getUserById(session.user.id);
                         setUser(userData);
                     } else {
@@ -63,6 +61,7 @@ export const useAuth = () => {
         setLoading(true);
         setError(null);
         try {
+            const userService = getUserService();
             const result = await userService.registerUser(userData);
             if (result.error) {
                 setError(result.error);
@@ -82,11 +81,40 @@ export const useAuth = () => {
         setLoading(true);
         setError(null);
         try {
-            const result = await authService.login(email, password);
+            const authService = getAuthService();
+            const result = await authService.signIn({ email, password });
             if (result.error) {
-                setError(result.error);
-                return { success: false, error: result.error };
+                const errorMessage = typeof result.error === 'string' ? result.error : result.error.message;
+                setError(errorMessage);
+                return { success: false, error: errorMessage };
             }
+            
+            // Update user state on successful login
+            if (result.user) {
+                // Convert AuthUser to our User type
+                const userService = getUserService();
+                try {
+                    const userData = await userService.getUserByEmail(email);
+                    if (userData) {
+                        setUser(userData);
+                    }
+                } catch (userError) {
+                    console.log('Could not fetch user data after login, but login was successful');
+                    // Create a basic user object from auth result
+                    const basicUser: User = {
+                        id: result.user.id,
+                        email: result.user.email,
+                        name: result.user.user_metadata?.name || 'User',
+                        role: result.user.user_metadata?.role || 'PLAYER',
+                        level: 'INTERMEDIATE',
+                        isActive: true,
+                        createdAt: new Date(result.user.created_at || Date.now()),
+                        updatedAt: new Date(result.user.updated_at || Date.now())
+                    };
+                    setUser(basicUser);
+                }
+            }
+            
             return { success: true };
         } catch (err) {
             const message = err instanceof Error ? err.message : 'Login failed';
@@ -100,7 +128,8 @@ export const useAuth = () => {
     const logout = async () => {
         setLoading(true);
         try {
-            await authService.logout();
+            const authService = getAuthService();
+            await authService.signOut();
             setUser(null);
             setSupabaseUser(null);
             setError(null);
@@ -118,6 +147,7 @@ export const useAuth = () => {
         setLoading(true);
         setError(null);
         try {
+            const userService = getUserService();
             const updatedUser = await userService.updateUser(user.id, userData);
             setUser(updatedUser);
             return { success: true, user: updatedUser };
@@ -134,6 +164,7 @@ export const useAuth = () => {
         if (!user?.id) return;
 
         try {
+            const userService = getUserService();
             const refreshedUser = await userService.getUserById(user.id);
             if (refreshedUser) {
                 setUser(refreshedUser);

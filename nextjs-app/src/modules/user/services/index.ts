@@ -1,8 +1,8 @@
 // Main services export file - exports all service classes and functions
 
 import {PrismaUserRepository, MockUserRepository, IUserRepository} from './userRepository';
-import {IAuthService, MockAuthService, SupabaseAuthService} from "@/modules/user/services/authService";
-import {IUserService, UserService} from "@/modules/user/services/userService";
+import {IAuthService, MockAuthService, SupabaseAuthService, ApiAuthService} from "@/modules/user/services/authService";
+import {IUserService, UserService, ApiUserService} from "@/modules/user/services/userService";
 import {checkApiHealth} from "@/modules/user/services/apiClient";
 
 // Repository exports
@@ -53,11 +53,20 @@ export const initializeServices = (config: {
     const { prismaClient, supabaseClient, mockMode = false } = config;
 
     if (mockMode || (!prismaClient && !supabaseClient)) {
-        // Use mock services for testing or when clients are not available
-        defaultUserRepository = new MockUserRepository();
-        defaultAuthService = new MockAuthService();
+        // Use API-based services for client-side or mock services for testing
+        if (typeof window !== 'undefined') {
+            // Client-side: use API-based services
+            defaultUserService = new ApiUserService();
+            defaultAuthService = new ApiAuthService();
+            defaultUserRepository = new MockUserRepository(); // Not used by ApiUserService
+        } else {
+            // Server-side testing: use mock services
+            defaultUserRepository = new MockUserRepository();
+            defaultAuthService = new MockAuthService();
+            defaultUserService = new UserService(defaultUserRepository, defaultAuthService);
+        }
     } else {
-        // Use real services with provided clients
+        // Use real services with provided clients (server-side)
         if (prismaClient) {
             defaultUserRepository = new PrismaUserRepository(prismaClient);
         } else {
@@ -69,9 +78,9 @@ export const initializeServices = (config: {
         } else {
             throw new Error('Supabase client is required for SupabaseAuthService');
         }
-    }
 
-    defaultUserService = new UserService(defaultUserRepository, defaultAuthService);
+        defaultUserService = new UserService(defaultUserRepository, defaultAuthService);
+    }
 };
 
 // Getter functions for default services

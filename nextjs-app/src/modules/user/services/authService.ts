@@ -655,6 +655,143 @@ export class MockAuthService implements IAuthService {
     }
 }
 
+// API-based auth service for client-side usage
+export class ApiAuthService implements IAuthService {
+    async signUp(request: SignUpRequest): Promise<AuthResponse> {
+        // Not implemented - registration handled by UserService
+        return {
+            user: null,
+            session: null,
+            error: { message: 'Use UserService.registerUser instead', code: 'not_implemented' }
+        };
+    }
+
+    async signIn(request: SignInRequest): Promise<AuthResponse> {
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(request)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return {
+                    user: null,
+                    session: null,
+                    error: { message: data.error || 'Login failed', code: 'login_failed' }
+                };
+            }
+
+            // Convert API response to AuthResponse format
+            const user: AuthUser = {
+                id: data.user.id,
+                email: data.user.email,
+                email_confirmed_at: new Date().toISOString(),
+                created_at: data.user.createdAt,
+                updated_at: data.user.updatedAt,
+                last_sign_in_at: new Date().toISOString(),
+                user_metadata: { name: data.user.name, role: data.user.role },
+                app_metadata: {}
+            };
+
+            const session: Session = {
+                access_token: 'mock_token',
+                refresh_token: 'mock_refresh_token',
+                expires_in: 3600,
+                expires_at: Math.floor(Date.now() / 1000) + 3600,
+                token_type: 'Bearer',
+                user: user
+            };
+
+            return {
+                user,
+                session,
+                error: undefined
+            };
+        } catch (error) {
+            return {
+                user: null,
+                session: null,
+                error: { message: 'Network error', code: 'network_error' }
+            };
+        }
+    }
+
+    async signOut(): Promise<{ error?: AuthError }> {
+        try {
+            const response = await fetch('/api/auth/logout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (!response.ok) {
+                return { error: { message: 'Logout failed', code: 'logout_failed' } };
+            }
+
+            return {};
+        } catch (error) {
+            return { error: { message: 'Network error', code: 'network_error' } };
+        }
+    }
+
+    async getSession(): Promise<{ data: { session: Session | null }; error?: AuthError }> {
+        // For now, return null session (not implemented)
+        return { data: { session: null } };
+    }
+
+    async refreshSession(): Promise<AuthResponse> {
+        return {
+            user: null,
+            session: null,
+            error: { message: 'Not implemented', code: 'not_implemented' }
+        };
+    }
+
+    async getUser(): Promise<{ data: { user: AuthUser | null }; error?: AuthError }> {
+        return { data: { user: null } };
+    }
+
+    async updateUser(updates: any): Promise<AuthResponse> {
+        return {
+            user: null,
+            session: null,
+            error: { message: 'Not implemented', code: 'not_implemented' }
+        };
+    }
+
+    async resetPassword(email: string, redirectTo?: string): Promise<{ error?: AuthError }> {
+        return { error: { message: 'Not implemented', code: 'not_implemented' } };
+    }
+
+    async updatePassword(password: string): Promise<{ error?: AuthError }> {
+        return { error: { message: 'Not implemented', code: 'not_implemented' } };
+    }
+
+    async resendVerification(email: string): Promise<{ error?: AuthError }> {
+        return { error: { message: 'Not implemented', code: 'not_implemented' } };
+    }
+
+    async verifyEmail(token: string): Promise<{ error?: AuthError }> {
+        return { error: { message: 'Not implemented', code: 'not_implemented' } };
+    }
+
+    async signInWithOAuth(provider: string, options?: any): Promise<{ data: { url: string }; error?: AuthError }> {
+        return {
+            data: { url: '' },
+            error: { message: 'Not implemented', code: 'not_implemented' }
+        };
+    }
+
+    onAuthStateChange(callback: (event: string, session: Session | null) => void): { data: { subscription: any } } {
+        const subscription = {
+            unsubscribe: () => console.log('API auth state change unsubscribed')
+        };
+        return { data: { subscription } };
+    }
+}
+
 // Factory function to create auth service based on environment
 export const createAuthService = (supabaseClient?: any): IAuthService => {
     if (process.env.NODE_ENV === 'test' || !supabaseClient) {

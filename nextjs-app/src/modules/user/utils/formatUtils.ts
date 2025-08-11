@@ -276,10 +276,11 @@ export const highlightSearchTerm = (
 ): string => {
     if (!searchTerm || !text) return text;
 
-    const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\// Address formatting
-    export const')})`, 'gi');
+    // Properly escape special regex characters in searchTerm
+    const escapedTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escapedTerm})`, 'gi');
     return text.replace(regex, `<mark class="${highlightClass}">$1</mark>`);
-    };
+};
 
 // Form validation message formatting
 export const formatValidationError = (

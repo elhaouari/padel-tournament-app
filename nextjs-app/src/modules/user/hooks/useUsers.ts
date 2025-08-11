@@ -1,8 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { User, UserFilters } from '../types';
-import { UserService } from '../services/userService';
-
-const userService = new UserService();
+import { getUserService } from '../services';
 
 export const useUsers = (initialFilters: UserFilters = {}) => {
     const [users, setUsers] = useState<User[]>([]);
@@ -19,7 +17,7 @@ export const useUsers = (initialFilters: UserFilters = {}) => {
         setLoading(true);
         setError(null);
         try {
-            const response = await userService.getUsers(page, pagination.limit, newFilters);
+            const response = await getUserService().getUsers(page, pagination.limit, newFilters);
             setUsers(response.users);
             setPagination({
                 page: response.page,
@@ -38,7 +36,7 @@ export const useUsers = (initialFilters: UserFilters = {}) => {
     const searchUsers = useCallback(async (query: string, currentUserId?: string) => {
         if (!query.trim()) return [];
         try {
-            return await userService.searchUsers(query, currentUserId);
+            return await getUserService().searchUsers(query, currentUserId);
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'Search failed';
             setError(errorMessage);

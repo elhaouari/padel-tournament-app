@@ -157,25 +157,6 @@ export const UserListPage: React.FC<UserListPageProps> = ({
     // Check if user is connecting
     const isConnecting = (userId: string) => connectingUsers.has(userId);
 
-    // Show authentication required message
-    if (!isAuthenticated) {
-        return (
-            <div className={styles.container}>
-                <div className={styles.authRequired}>
-                    <div className={styles.authIcon}>🔒</div>
-                    <h2>Sign In Required</h2>
-                    <p>Please sign in to browse and connect with other users.</p>
-                    <button
-                        onClick={() => router.push('/auth/login')}
-                        className={styles.loginButton}
-                    >
-                        Sign In
-                    </button>
-                </div>
-            </div>
-        );
-    }
-
     return (
         <div className={styles.container}>
             {/* Page Header */}

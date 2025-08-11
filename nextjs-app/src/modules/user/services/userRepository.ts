@@ -479,7 +479,7 @@ export class MockUserRepository implements IUserRepository {
     async create(userData: Omit<User, 'createdAt' | 'updatedAt'>): Promise<User> {
         const user: User = {
             ...userData,
-            id: userData.id || this.nextId++.toString(),
+            id: userData.id || this.nextId++,
             createdAt: new Date(),
             updatedAt: new Date()
         };

@@ -578,18 +578,6 @@
         background: #2d3748;
     }
 }
-font-size: 20px;
-}
-
-.error p,
-.unauthorized p {
-    font-size: 14px;
-}
-
-.modalOverlay {
-    padding: 8px;
-}
-}
 
 /* Animations */
 .content {
@@ -713,4 +701,15 @@ font-size: 20px;
     }
 
     .error h2,
-    .unauthorized h2 {
+    .unauthorized h2 {        color: #fc8181;
+    }
+
+    .error p,
+    .unauthorized p {
+        color: #a0aec0;
+    }
+
+    .loading p {
+        color: #a0aec0;
+    }
+}

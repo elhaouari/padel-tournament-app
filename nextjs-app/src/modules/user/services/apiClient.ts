@@ -1,4 +1,4 @@
-import { ApiClient } from '../utils/apiUtils';
+import { ApiClient } from '../../shared/services/apiClient';
 
 // API endpoints
 export const API_ENDPOINTS = {

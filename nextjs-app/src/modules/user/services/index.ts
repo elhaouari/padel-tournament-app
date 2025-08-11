@@ -1,28 +1,18 @@
 // Main services export file - exports all service classes and functions
 
+import {PrismaUserRepository, MockUserRepository, IUserRepository} from './userRepository';
+import {IAuthService, MockAuthService, SupabaseAuthService} from "@/modules/user/services/authService";
+import {IUserService, UserService} from "@/modules/user/services/userService";
+import {checkApiHealth} from "@/modules/user/services/apiClient";
+
 // Repository exports
 export * from './userRepository';
-export {
-    IUserRepository,
-    PrismaUserRepository,
-    MockUserRepository
-} from './userRepository';
 
 // Authentication service exports
 export * from './authService';
-export {
-    IAuthService,
-    SupabaseAuthService,
-    MockAuthService,
-    createAuthService
-} from './authService';
 
 // User service exports
 export * from './userService';
-export {
-    IUserService,
-    UserService
-} from './userService';
 
 // API client exports
 export * from './apiClient';

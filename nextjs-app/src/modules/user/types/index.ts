@@ -170,5 +170,4 @@ export const DEFAULT_FORM_STATE = <T>(initialValues: T): FormState<T> => ({
 
 // Constants
 export const USER_ROLES = Object.values(UserRole);
-export const PADEL_LEVELS = Object.values(PadelLevel);
 export const REQUEST_STATUSES = Object.values(RequestStatus);
